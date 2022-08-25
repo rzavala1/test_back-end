@@ -1,0 +1,9 @@
+.App {
+  padding: 35px;
+}
+
+.App-body {
+  min-height: 100vh;
+  flex-direction: column;
+  font-size: calc(10px + 2vmin);
+}
