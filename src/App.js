@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TextField, Grid } from '@mui/material';
+import { TextField, Grid, Alert } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import './App.css';
@@ -12,9 +12,11 @@ function App() {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(undefined);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const createAds = () => {
     setImage(undefined);
+    setError(false);
     setLoading(true);
     var data = JSON.stringify({
       "price": price,
@@ -23,7 +25,7 @@ function App() {
 
     var config = {
       method: 'post',
-      url: `${process.env.REACT_APP_SERVER_BACK_END}/ads`,
+      url: `${process.env.REACT_APP_SERVER_BACK_END}ads`,
       headers: {
         'Content-Type': 'application/json'
       },
@@ -37,6 +39,7 @@ function App() {
       })
       .catch(function (error) {
         console.log(error);
+        setError(true);
         setLoading(false);
       });
 
@@ -79,11 +82,13 @@ function App() {
         </Grid>
         <Grid item xs={12}>
           {image && <img
-            src={`${process.env.REACT_APP_SERVER_BACK_END}/ads/images/${image}`}
+            src={`${process.env.REACT_APP_SERVER_BACK_END}ads/images/${image}`}
             alt={"imagen"}
           />}
         </Grid>
       </Grid>
+      {error && <Alert severity="error">Ocurrio un error, por favor intente de nuevo</Alert>}
+      {image && <Alert severity="success">Se publico con éxito</Alert>}
     </div>
   );
 }
